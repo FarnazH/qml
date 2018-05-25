@@ -71,7 +71,8 @@ class Compound(object):
             self.read_xyz(xyz)
 
     def generate_coulomb_matrix(self, size = 23, sorting = "row-norm", indices = None):
-        """ Creates a Coulomb Matrix representation of a molecule.
+        """ Generate the lower-triangular elements (including diagonal elements) of the (u)sorted
+            Coulomb Matrix representation of a molecule.
             A matrix :math:`M` is constructed with elements
 
             .. math::
@@ -84,12 +85,14 @@ class Compound(object):
 
             where :math:`i` and :math:`j` are atom indices, :math:`Z` is nuclear charge and
             :math:`\\bf R` is the coordinate in euclidean space.
+            The matrix :math:`M` is padded with rows and columns of zero to have the (size, size) shape.
             if ``sorting = 'row-norm'``, the atom indices are reordered such that
 
                 :math:`\\sum_j M_{1j}^2 \\geq \\sum_j M_{2j}^2 \\geq ... \\geq \\sum_j M_{nj}^2`
 
-            The upper triangular of M, including the diagonal, is concatenated to a 1D
-            vector representation.
+            The molecular representation is then a 1D array containing the lower-triangular
+            elements (including diagonal elements) of :math:`M`.
+
             The representation is calculated using an OpenMP parallel Fortran routine.
 
             :param size: The size of the largest molecule supported by the representation
@@ -105,7 +108,7 @@ class Compound(object):
             self.coordinates, size = size, sorting = sorting)
 
     def generate_eigenvalue_coulomb_matrix(self, size = 23):
-        """ Creates an eigenvalue Coulomb Matrix representation of a molecule.
+        """  Generate the sorted eigenvalues of Coulomb Matrix representation of a molecule.
             A matrix :math:`M` is constructed with elements
 
             .. math::
@@ -118,7 +121,8 @@ class Compound(object):
 
             where :math:`i` and :math:`j` are atom indices, :math:`Z` is nuclear charge and
             :math:`\\bf R` is the coordinate in euclidean space.
-            The molecular representation of the molecule is then the sorted eigenvalues of M.
+            The molecular representation is then a 1D array containing the sorted eigenvalues of
+            :math:`M`.
             The representation is calculated using an OpenMP parallel Fortran routine.
 
             :param size: The size of the largest molecule supported by the representation

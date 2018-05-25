@@ -67,7 +67,8 @@ def vector_to_matrix(v):
     return M
 
 def generate_coulomb_matrix(nuclear_charges, coordinates, size = 23, sorting = "row-norm"):
-    """ Creates a Coulomb Matrix representation of a molecule.
+    """ Generate the lower-triangular elements (including diagonal elements) of the (u)sorted
+        Coulomb Matrix representation of a molecule.
         Sorting of the elements can either be done by ``sorting="row-norm"`` or ``sorting="unsorted"``.
         A matrix :math:`M` is constructed with elements
 
@@ -81,6 +82,7 @@ def generate_coulomb_matrix(nuclear_charges, coordinates, size = 23, sorting = "
 
         where :math:`i` and :math:`j` are atom indices, :math:`Z` is nuclear charge and
         :math:`\\bf R` is the coordinate in euclidean space.
+        The matrix :math:`M` is padded with rows and columns of zero to have the (size, size) shape.
         If ``sorting = 'row-norm'``, the atom indices are reordered such that
 
             :math:`\\sum_j M_{1j}^2 \\geq \\sum_j M_{2j}^2 \\geq ... \\geq \\sum_j M_{nj}^2`
@@ -90,6 +92,8 @@ def generate_coulomb_matrix(nuclear_charges, coordinates, size = 23, sorting = "
 
         If ``sorting = 'unsorted``, the elements are sorted in the same order as the input coordinates
         and nuclear charges.
+        The molecular representation is then a 1D array containing the lower-triangular
+        elements (including diagonal elements) of :math:`M`.
 
         The representation is calculated using an OpenMP parallel Fortran routine.
 
@@ -233,7 +237,7 @@ def generate_atomic_coulomb_matrix(nuclear_charges, coordinates, size = 23, sort
         raise SystemExit
 
 def generate_eigenvalue_coulomb_matrix(nuclear_charges, coordinates, size = 23):
-    """ Creates an eigenvalue Coulomb Matrix representation of a molecule.
+    """ Generate the sorted eigenvalues of Coulomb Matrix representation of a molecule.
         A matrix :math:`M` is constructed with elements
 
         .. math::
@@ -246,7 +250,9 @@ def generate_eigenvalue_coulomb_matrix(nuclear_charges, coordinates, size = 23):
 
         where :math:`i` and :math:`j` are atom indices, :math:`Z` is nuclear charge and
         :math:`\\bf R` is the coordinate in euclidean space.
-        The molecular representation of the molecule is then the sorted eigenvalues of M.
+        The matrix :math:`M` is padded with rows and columns of zero to have the (size, size) shape.
+        The molecular representation is then a 1D array containing the sorted eigenvalues of
+        :math:`M`.
         The representation is calculated using an OpenMP parallel Fortran routine.
 
         :param nuclear_charges: Nuclear charges of the atoms in the molecule
