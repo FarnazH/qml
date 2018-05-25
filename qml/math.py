@@ -22,8 +22,6 @@
 
 import numpy as np
 
-from copy import deepcopy
-
 from .fcho_solve import fcho_solve
 from .fcho_solve import fcho_invert
 from .fcho_solve import fbkf_solve

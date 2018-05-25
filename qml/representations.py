@@ -268,7 +268,8 @@ def generate_eigenvalue_coulomb_matrix(nuclear_charges, coordinates, size = 23):
     return fgenerate_eigenvalue_coulomb_matrix(nuclear_charges,
         coordinates, size)
 
-def generate_bob(nuclear_charges, coordinates, atomtypes, size=23, asize = {"O":3, "C":7, "N":3, "H":16, "S":1}):
+
+def generate_bob(nuclear_charges, coordinates, asize={"O": 3, "C": 7, "N": 3, "H": 16, "S": 1}):
     """ Creates a Bag of Bonds (BOB) representation of a molecule.
         The representation expands on the coulomb matrix representation.
         For each element a bag (vector) is constructed for self interactions
@@ -293,8 +294,6 @@ def generate_bob(nuclear_charges, coordinates, atomtypes, size=23, asize = {"O":
         :type nuclear_charges: numpy array
         :param coordinates: 3D Coordinates of the atoms in the molecule
         :type coordinates: numpy array
-        :param size: The maximum number of atoms in the representation
-        :type size: integer
         :param asize: The maximum number of atoms of each element type supported by the representation
         :type asize: dictionary
 

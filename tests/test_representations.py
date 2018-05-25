@@ -170,7 +170,7 @@ def eigenvalue_coulomb_matrix(mols, size, path):
 def bob(mols, size, asize, path):
 
     for i, mol in enumerate(mols): 
-        mol.generate_bob(size=size, asize=asize)
+        mol.generate_bob(asize=asize)
 
     X_test = np.asarray([mol.representation for mol in mols])
     X_ref = np.loadtxt(path + "/data/bob_representation.txt")

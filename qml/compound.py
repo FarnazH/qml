@@ -70,7 +70,7 @@ class Compound(object):
         if xyz is not None:
             self.read_xyz(xyz)
 
-    def generate_coulomb_matrix(self, size = 23, sorting = "row-norm", indices = None):
+    def generate_coulomb_matrix(self, size = 23, sorting = "row-norm"):
         """ Generate the lower-triangular elements (including diagonal elements) of the (u)sorted
             Coulomb Matrix representation of a molecule.
             A matrix :math:`M` is constructed with elements
@@ -218,7 +218,7 @@ class Compound(object):
             sorting = sorting, central_cutoff = central_cutoff, central_decay = central_decay,
             interaction_cutoff = interaction_cutoff, interaction_decay = interaction_decay)
 
-    def generate_bob(self, size=23, asize = {"O":3, "C":7, "N":3, "H":16, "S":1}):
+    def generate_bob(self, asize={"O": 3, "C": 7, "N": 3, "H": 16, "S": 1}):
         """ Creates a Bag of Bonds (BOB) representation of a molecule.
             The representation expands on the coulomb matrix representation.
             For each element a bag (vector) is constructed for self interactions
@@ -240,14 +240,13 @@ class Compound(object):
             The representation is calculated using an OpenMP parallel Fortran routine.
 
             :param asize: The maximum number of atoms of each element type supported by the representation
-            :type size: dictionary
+            :type asize: dictionary
 
             :return: 1D representation
             :rtype: numpy array
         """
 
-        self.representation = generate_bob(self.nuclear_charges, self.coordinates, 
-                self.atomtypes, asize = asize)
+        self.representation = generate_bob(self.nuclear_charges, self.coordinates, asize=asize)
 
     def generate_fchl_representation(self, max_size = 23, cell=None, neighbors=24,cut_distance=5.0):
         """Generates the representation for the FCHL-kernel. Note that this representation is incompatible with generic ``qml.kernel.*`` kernels.
