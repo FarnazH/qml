@@ -109,14 +109,14 @@ def generate_coulomb_matrix(nuclear_charges, coordinates, size = 23, sorting = "
         :return: 1D representation - shape (size(size+1)/2,)
         :rtype: numpy array
     """
+    if nuclear_charges.size > size:
+        raise ValueError("The number of atoms cannot be larger than the given size!")
 
     if (sorting == "row-norm"):
-        return fgenerate_coulomb_matrix(nuclear_charges, \
-            coordinates, size)
+        return fgenerate_coulomb_matrix(nuclear_charges, coordinates, size)
 
     elif (sorting == "unsorted"):
-        return fgenerate_unsorted_coulomb_matrix(nuclear_charges, \
-            coordinates, size)
+        return fgenerate_unsorted_coulomb_matrix(nuclear_charges, coordinates, size)
 
     else:
         print("ERROR: Unknown sorting scheme requested")
@@ -265,8 +265,11 @@ def generate_eigenvalue_coulomb_matrix(nuclear_charges, coordinates, size = 23):
         :return: 1D representation - shape (size, )
         :rtype: numpy array
     """
-    return fgenerate_eigenvalue_coulomb_matrix(nuclear_charges,
-        coordinates, size)
+    if nuclear_charges.size > size:
+        raise ValueError("The number of atoms cannot be larger than the given size!")
+    if coordinates.ndim != 2 and coordinates.shape[0] != nuclear_charges.size:
+        raise ValueError("The coordinates should be a 2D array with {0} row(s)!".format(nuclear_charges.size))
+    return fgenerate_eigenvalue_coulomb_matrix(nuclear_charges, coordinates, size)
 
 
 def generate_bob(nuclear_charges, coordinates, asize={"O": 3, "C": 7, "N": 3, "H": 16, "S": 1}):
